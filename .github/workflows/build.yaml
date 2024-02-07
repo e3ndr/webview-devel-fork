@@ -107,7 +107,7 @@ jobs:
         run: sudo apk add --upgrade build-base xvfb-run clang17 clang17-extra-tools webkit2gtk-dev # 4.0 is in the regular package.
         shell: alpine.sh {0}
       - name: Build and run tests
-        run: xvfb-run ./script/build.sh
+        run: xvfb-run ./script/build.sh info clean format deps check build
         shell: alpine.sh {0}
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -136,7 +136,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build and run tests
-        run: ./script/build.sh
+        run: ./script/build.sh info clean format deps check build test
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
