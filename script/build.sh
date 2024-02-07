@@ -37,21 +37,6 @@ windows_fetch_mswebview2() {
     fi
 }
 
-get_arch_bitness_from_arch() {
-    case "${1}" in
-        x64)
-            echo 64
-            ;;
-        x86)
-            echo 32
-            ;;
-        *)
-            echo "ERROR: Unsupported architecture (${1})" >&2
-            return 1
-            ;;
-    esac
-}
-
 is_ci() {
     if [[ -z "${CI+x}" ]]; then
         return 1
@@ -66,7 +51,7 @@ task_clean() {
 }
 
 task_format() {
-    if ! command -v clang-format >/dev/null 2>&1 ; then
+    if ! command -v clang-format >/dev/null 2>&1; then
         local message="Formatting (clang-format not installed)"
         # Allow skipping this task on macOS because GHA doesn't have clang-format installed.
         if is_ci && [[ "${host_os}" != "macos" ]]; then
@@ -91,7 +76,7 @@ task_deps() {
 }
 
 task_check() {
-    if ! command -v clang-tidy >/dev/null 2>&1 ; then
+    if ! command -v clang-tidy >/dev/null 2>&1; then
         local message="Linting (clang-tidy not installed)"
         # Allow skipping this task on macOS because GHA doesn't have clang-tidy installed.
         if is_ci && [[ "${host_os}" != "macos" ]]; then
@@ -275,8 +260,8 @@ exe_suffix=
 shared_lib_suffix=
 
 if [[ "${target_arch}" != "${host_arch}" ]]; then
-    common_compile_flags+=("-m$(get_arch_bitness_from_arch "${target_arch}")")
-    common_link_flags+=("-m$(get_arch_bitness_from_arch "${target_arch}")")
+    common_compile_flags+=("-march=${target_arch}")
+    common_link_flags+=("-march=${target_arch}")
 fi
 
 c_compile_flags+=("${common_compile_flags[@]}")
