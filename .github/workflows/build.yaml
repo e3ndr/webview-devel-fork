@@ -1,4 +1,5 @@
 # Plan is mostly documented here. https://github.com/webview/webview/pull/1056#issuecomment-1871737900
+# Can check files with: file libwebview.so & readelf -A libwebview.so and
 
 name: Build Artifacts
 on: [push, pull_request]
@@ -21,9 +22,6 @@ jobs:
             arch: amd64
             distro: bullseye
           - name: armhf
-            arch: armv6
-            distro: bullseye
-          - name: armel
             arch: armv6
             distro: bullseye
           - name: aarch64
@@ -76,8 +74,6 @@ jobs:
           - name: x86_64
             arch: x86_64
           - name: armhf
-            arch: armhf
-          - name: armel
             arch: armhf
           - name: aarch64
             arch: aarch64
