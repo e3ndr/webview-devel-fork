@@ -55,7 +55,7 @@ jobs:
           run: |
             cd /home/build
             ${{ matrix.name == 'armhf' && 'TARGET_ARCH=armv6+fp' || matrix.name == 'armel' && 'TARGET_ARCH=armv6+nofp' || '' }}
-            ./script/build.sh
+            ./script/build.sh info clean format deps check build
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
