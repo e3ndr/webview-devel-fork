@@ -11,6 +11,7 @@ jobs:
   build-linux-gnu:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: x86
@@ -19,7 +20,7 @@ jobs:
           - name: x86_64
             arch: amd64
             distro: bullseye
-          - name: armv7
+          - name: armv6
             arch: armv6
             distro: bullseye
           - name: armv7
@@ -65,6 +66,7 @@ jobs:
   build-linux-musl:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: x86
@@ -121,6 +123,7 @@ jobs:
 
   build-macos:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: x86_64
@@ -149,6 +152,7 @@ jobs:
   build-windows-msvc:
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: x86
