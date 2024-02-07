@@ -20,11 +20,11 @@ jobs:
           - name: x86_64
             arch: amd64
             distro: bullseye
-          - name: armv6
+          - name: armhf
             arch: armv6
             distro: bullseye
-          - name: armv7
-            arch: armv7
+          - name: armel
+            arch: armv6
             distro: bullseye
           - name: aarch64
             arch: aarch64
@@ -54,6 +54,7 @@ jobs:
             apt install build-essential gcc curl clang clang-format clang-tidy libwebkit2gtk-4.0-dev xvfb -y
           run: |
             cd /home/build
+            ${{ matrix.name == 'armhf' && 'TARGET_ARCH=armv6+fp' || matrix.name == 'armel' && 'TARGET_ARCH=armv6+nofp' || '' }}
             xvfb-run ./script/build.sh
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -74,7 +75,9 @@ jobs:
           - name: x86_64
             arch: x86_64
           - name: armhf
-            arch: armhf
+            arch: armv6
+          - name: armel
+            arch: armv6
           - name: aarch64
             arch: aarch64
           # - name: riscv64
@@ -107,7 +110,7 @@ jobs:
         run: sudo apk add --upgrade build-base xvfb-run clang17 clang17-extra-tools webkit2gtk-dev # 4.0 is in the regular package.
         shell: alpine.sh {0}
       - name: Build and run tests
-        run: xvfb-run ./script/build.sh info clean format deps check build
+        run: ${{ matrix.name == 'armhf' && 'TARGET_ARCH=armv6+fp' || matrix.name == 'armel' && 'TARGET_ARCH=armv6+nofp' || '' }} xvfb-run ./script/build.sh info clean format deps check build
         shell: alpine.sh {0}
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
