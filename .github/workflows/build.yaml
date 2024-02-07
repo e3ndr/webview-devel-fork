@@ -75,9 +75,9 @@ jobs:
           - name: x86_64
             arch: x86_64
           - name: armhf
-            arch: armv6
+            arch: armhf
           - name: armel
-            arch: armv6
+            arch: armhf
           - name: aarch64
             arch: aarch64
           # - name: riscv64
