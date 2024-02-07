@@ -19,8 +19,22 @@ jobs:
           - name: x86_64
             arch: amd64
             distro: bullseye
+          - name: armv7
+            arch: armv6
+          - name: armv7
+            arch: armv7
+            distro: bullseye
           - name: aarch64
             arch: aarch64
+            distro: bullseye
+          - name: riscv64
+            arch: riscv64
+            distro: ubuntu20.04
+          - name: s390x
+            arch: s390x
+            distro: bullseye
+          - name: ppc64le
+            arch: ppc64le
             distro: bullseye
     env:
       CXX_STD: c++11
@@ -56,8 +70,16 @@ jobs:
             arch: x86
           - name: x86_64
             arch: x86_64
+          - name: armhf
+            arch: armhf
           - name: aarch64
             arch: aarch64
+          - name: riscv64
+            arch: riscv64
+          - name: s390x
+            arch: s390x
+          - name: ppc64le
+            arch: ppc64le
     env:
       CXX_STD: c++11
     steps:
