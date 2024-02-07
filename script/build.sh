@@ -262,6 +262,15 @@ shared_lib_suffix=
 if [[ "${target_arch}" != "${host_arch}" ]]; then
     common_compile_flags+=("-march=${target_arch}")
     common_link_flags+=("-march=${target_arch}")
+
+    if [[ $target_arch == *"+nofp"* ]]; then
+        common_compile_flags+=("-mfloat-abi=soft")
+        common_link_flags+=("-mfloat-abi=soft")
+    fi
+    if [[ $target_arch == *"+fp"* ]]; then
+        common_compile_flags+=("-mfloat-abi=hard")
+        common_link_flags+=("-mfloat-abi=hard")
+    fi
 fi
 
 c_compile_flags+=("${common_compile_flags[@]}")

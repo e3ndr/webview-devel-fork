@@ -54,7 +54,8 @@ jobs:
             apt install build-essential gcc curl clang clang-format clang-tidy libwebkit2gtk-4.0-dev -y
           run: |
             cd /home/build
-            ${{ matrix.name == 'armhf' && 'TARGET_ARCH=armv6+fp' || matrix.name == 'armel' && 'TARGET_ARCH=armv6+nofp' || '' }}
+            ${{ matrix.name == 'armhf' && 'TARGET_ARCH=armv6+fp' || '' }}
+            ${{ matrix.name == 'armel' && 'TARGET_ARCH=armv6+nofp' || '' }}
             ./script/build.sh info clean format deps check build
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -110,7 +111,7 @@ jobs:
         run: sudo apk add --upgrade build-base clang17 clang17-extra-tools webkit2gtk-dev # 4.0 is in the regular package.
         shell: alpine.sh {0}
       - name: Build and run tests
-        run: ${{ matrix.name == 'armhf' && 'TARGET_ARCH=armv6+fp' || matrix.name == 'armel' && 'TARGET_ARCH=armv6+nofp' || '' }} ./script/build.sh info clean format deps check build
+        run: ${{ matrix.name == 'armhf' && 'TARGET_ARCH=armv6+fp' || '' }} ${{ matrix.name == 'armel' && 'TARGET_ARCH=armv6+nofp' || '' }} ./script/build.sh info clean format deps check build
         shell: alpine.sh {0}
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
