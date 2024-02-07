@@ -270,7 +270,7 @@ common_link_flags=("${warning_flags[@]}")
 c_compile_flags=()
 c_link_flags=()
 cxx_compile_flags=()
-cxx_link_flags=()
+cxx_link_flags=("-ldl")
 exe_suffix=
 shared_lib_suffix=
 
