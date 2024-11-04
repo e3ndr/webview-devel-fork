@@ -119,6 +119,8 @@ typedef void *webview_t;
 // fails.
 WEBVIEW_API webview_t webview_create(int debug, void *window);
 
+WEBVIEW_API webview_t webview_create_size(int debug, int width, int height);
+
 // Destroys a webview and closes the native window.
 WEBVIEW_API void webview_destroy(webview_t w);
 
@@ -1170,8 +1172,8 @@ inline id operator"" _str(const char *s, std::size_t) {
 class cocoa_wkwebview_engine {
 public:
   cocoa_wkwebview_engine(bool debug, void *window)
-      : m_debug{debug}, m_window{static_cast<id>(window)}, m_owns_window{
-                                                               !window} {
+      : m_debug{debug}, m_window{static_cast<id>(window)},
+        m_owns_window{!window} {
     auto app = get_shared_application();
     // See comments related to application lifecycle in create_app_delegate().
     if (!m_owns_window) {
@@ -2483,7 +2485,8 @@ private:
 
 class win32_edge_engine {
 public:
-  win32_edge_engine(bool debug, void *window) {
+  win32_edge_engine(bool debug, void *window, int initial_width = 640,
+                    int initial_height = 480) {
     if (!is_webview2_available()) {
       return;
     }
@@ -2588,8 +2591,8 @@ public:
       inc_window_count();
 
       m_dpi = get_window_dpi(m_window);
-      constexpr const int initial_width = 640;
-      constexpr const int initial_height = 480;
+      //constexpr const int initial_width = 640;
+      //constexpr const int initial_height = 480;
       set_size(initial_width, initial_height, WEBVIEW_HINT_NONE);
     } else {
       m_window = *(static_cast<HWND *>(window));
@@ -2897,8 +2900,9 @@ namespace webview {
 
 class webview : public browser_engine {
 public:
-  webview(bool debug = false, void *wnd = nullptr)
-      : browser_engine(debug, wnd) {}
+  webview(bool debug = false, void *wnd = nullptr, int width = 640,
+          int height = 480)
+      : browser_engine(debug, wnd, width, height) {}
 
   void navigate(const std::string &url) {
     if (url.empty()) {
@@ -3021,6 +3025,15 @@ private:
 
 WEBVIEW_API webview_t webview_create(int debug, void *wnd) {
   auto w = new webview::webview(debug, wnd);
+  if (!w->window()) {
+    delete w;
+    return nullptr;
+  }
+  return w;
+}
+
+WEBVIEW_API webview_t webview_create_size(int debug, int width, int height) {
+  auto w = new webview::webview(debug, nullptr, width, height);
   if (!w->window()) {
     delete w;
     return nullptr;

@@ -8,6 +8,7 @@
 #define WEBVIEW_HINT_FIXED 3
 typedef void *webview_t;
 extern webview_t webview_create(int debug, void *window);
+extern webview_t webview_create_size(int debug, int width, int height);
 extern void webview_destroy(webview_t w);
 extern void webview_run(webview_t w);
 extern void webview_terminate(webview_t w);
