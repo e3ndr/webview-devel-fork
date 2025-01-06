@@ -880,7 +880,8 @@ constexpr auto webkit_web_view_run_javascript =
 
 class gtk_webkit_engine {
 public:
-  gtk_webkit_engine(bool debug, void *window)
+  gtk_webkit_engine(bool debug, void *window, int initial_width = 640,
+                    int initial_height = 480)
       : m_window(static_cast<GtkWidget *>(window)) {
     auto owns_window = !window;
     if (owns_window) {
@@ -932,6 +933,7 @@ public:
     if (owns_window) {
       gtk_widget_grab_focus(GTK_WIDGET(m_webview));
       gtk_widget_show_all(m_window);
+      set_size(initial_width, initial_height, WEBVIEW_HINT_NONE);
     }
   }
   virtual ~gtk_webkit_engine() = default;
@@ -1171,13 +1173,15 @@ inline id operator"" _str(const char *s, std::size_t) {
 
 class cocoa_wkwebview_engine {
 public:
-  cocoa_wkwebview_engine(bool debug, void *window)
+  cocoa_wkwebview_engine(bool debug, void *window, int initial_width = 640,
+                    int initial_height = 480)
       : m_debug{debug}, m_window{static_cast<id>(window)},
         m_owns_window{!window} {
     auto app = get_shared_application();
     // See comments related to application lifecycle in create_app_delegate().
     if (!m_owns_window) {
       create_window();
+      set_size(initial_width, initial_height, WEBVIEW_HINT_NONE);
     } else {
       // Only set the app delegate if it hasn't already been set.
       auto delegate = objc::msg_send<id>(app, "delegate"_sel);
