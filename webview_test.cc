@@ -49,6 +49,18 @@ static void test_c_api() {
   webview_destroy(w);
 }
 
+static void test_c_api_size() {
+  webview_t w;
+  w = webview_create_size(false, 1920, 1080);
+  webview_set_title(w, "Test");
+  webview_set_html(w, "set_html ok");
+  webview_navigate(w, "data:text/plain,navigate%20ok");
+  webview_dispatch(w, cb_assert_arg, (void *)"arg");
+  webview_dispatch(w, cb_terminate, nullptr);
+  webview_run(w);
+  webview_destroy(w);
+}
+
 // =================================================================
 // TEST: use C API to test binding and unbinding.
 // =================================================================
@@ -466,6 +478,7 @@ int main(int argc, char *argv[]) {
   std::unordered_map<std::string, std::function<void()>> all_tests = {
       {"terminate", test_terminate},
       {"c_api", test_c_api},
+      {"c_api_size", test_c_api_size},
       {"c_api_bind", test_c_api_bind},
       {"c_api_version", test_c_api_version},
       {"bidir_comms", test_bidir_comms},
